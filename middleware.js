@@ -10,10 +10,10 @@ export const middleware = (request) => {
     // Cloned url to work with
     const url = nextUrl.clone()
     // Client country, defaults to us
-    const country = geo?.country?.toLowerCase() || "us"
+    const country = geo?.country?.toLowerCase() || "ar"
 
     console.log('geo', geo)
-    console.log('nextUrl',nextUrl)
+    console.log('nextUrl', nextUrl)
 
     try {
         // Early return if it is a public file such as an image
@@ -31,10 +31,17 @@ export const middleware = (request) => {
         }
 
 
-        // if (country === "us") {
-        //     url.pathname = `/en/${nextUrl.pathname}`
-        //     return NextResponse.redirect(url)
-        // }
+        if (country === "us") {
+            return NextResponse.rewrite(new URL('/en', request.url))
+        }
+
+        if (country === "in") {
+            return NextResponse.rewrite(new URL('/hi', request.url))
+        }
+
+        if (country === "ar") {
+            return NextResponse.rewrite(new URL('/ar', request.url))
+        }
 
         return undefined
     } catch (error) {
